@@ -24,7 +24,7 @@ public class Pantera extends Animal{
 
     @Override
     public void Alimentarse() {
-        System.out.println("Me alimento de hierbas");
+        System.out.println("Me alimento de carnes");
     }    
     
 }
