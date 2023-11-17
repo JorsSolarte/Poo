@@ -12,13 +12,9 @@ public class Vehiculo {
     String modelo;
     String placa;
     private int horaIngreso;
-    private int horaSalida;
+    private int horaSalida = 0;
 
     // Constructores, getters y setters
-
-    public Vehiculo() {
-        this.horaSalida = 0;
-    }
 
     public Vehiculo(String marca, String modelo, String placa, int horaIngreso) {
         this.marca = marca;

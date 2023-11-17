@@ -9,34 +9,21 @@ package com.mycompany.proyectoparcial2;
  */
 public class Automovil extends Vehiculo {
     private int numeroPuertas;
-    private int horaSalida;
 
     // Constructores, getters y setters
+
     public Automovil(int numeroPuertas, String marca, String modelo, String placa, int horaIngreso) {
         super(marca, modelo, placa, horaIngreso);
         this.numeroPuertas = numeroPuertas;
     }
-    
+
     public int getNumeroPuertas() {
         return numeroPuertas;
     }
 
-    @Override
-    public int getHoraSalida() {
-        return horaSalida;
-    }
-    
     public void setNumeroPuertas(int numeroPuertas) {
         this.numeroPuertas = numeroPuertas;
     }
     
-    @Override
-    public void setHoraSalida(int horaSalida) {
-        this.horaSalida = horaSalida;
-    }
-    
     // Otros métodos específicos para automóviles
-
-
-
 }

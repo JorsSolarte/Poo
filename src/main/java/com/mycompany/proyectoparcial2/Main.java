@@ -44,8 +44,7 @@ public class Main {
             String modelo = req.params(":modelo");
             String placa = req.params(":placa");
             int cilindrada = Integer.parseInt(req.params(":cilindrada"));
-            int horaIngreso = Integer.parseInt(":horaIngreso");
-
+            int horaIngreso = Integer.parseInt(req.params(":horaIngreso"));
             Motocicleta nuevaMoto = new Motocicleta(cilindrada, marca, modelo, placa, horaIngreso);
             motos.add(nuevaMoto);
 
@@ -65,13 +64,12 @@ public class Main {
             String placa = req.params(":placa");
 
             for (Vehiculo m : motos) {
-                if (m.getPlaca().equals(placa)) {
+                if (m.getPlaca().equalsIgnoreCase(placa)) {
                     m.setHoraSalida( obtenerHoraActual() );
-                    return gson.toJson(m);
+                     return gson.toJson("Motocicleta encontrada, Salida registrada"+gson.toJson(m));
                 }
             }
-
-            return "Moto no encontrada";
+            return gson.toJson("Moto no encontrada");
         });
         
         // Reporte de ganancias para motos
@@ -100,10 +98,10 @@ public class Main {
             String marca = req.params(":marca");
             String modelo = req.params(":modelo");
             String placa = req.params(":placa");
-            int horaIngreso = Integer.parseInt(":horaIngreso");
-            
+            int horaIngreso = Integer.parseInt(req.params(":horaIngreso"));
             // No olvidar convertir en integer los string numericos que llegan por url
             int numeroPuertas = Integer.parseInt(req.params(":numeroPuertas"));
+            
 
             // Crear un nuevo automóvil y agregarlo al parqueadero
             Automovil nuevoAuto = new Automovil(numeroPuertas, marca, modelo, placa, horaIngreso);
@@ -113,7 +111,7 @@ public class Main {
         });
         
         // Obtener lista de automóviles actuales
-        get("/automovilesActuales", (req, res) -> {
+        get("/AtomovilesActuales", (req, res) -> {
             res.type("application/json");
             return gson.toJson(automoviles);
         });
@@ -125,16 +123,16 @@ public class Main {
             String placa = req.params(":placa");
 
             for (Vehiculo v : automoviles) {
-                if (v.getPlaca().equals(placa)) {
+                if (v.getPlaca().equalsIgnoreCase(placa)) {
                     v.setHoraSalida(obtenerHoraActual());
-                    return gson.toJson(v);
+                    return gson.toJson("Automovil encontrado, Salida registrada"+gson.toJson(v));
                 }
             }
-            return "Automóvil no encontrado";
+            return gson.toJson("Automóvil no encontrado");
         });
         
         // Reporte de ganancias para automóviles
-        get("/automovilesReporte", (req, res) -> {
+        get("/AutomovilesReporte", (req, res) -> {
             res.type("application/json");
             return obtenerReporteGanancias(automoviles);
         });
@@ -149,20 +147,20 @@ public class Main {
     }
 
     //metodo para calcular ganancias e
-    private static int calcularGanancias(Vehiculo v) {
-    
-    int horaActual = obtenerHoraActual();
-    // Calcular el tiempo que el vehículo ha estado en el parqueadero
-    int tiempoEnParqueadero = horaActual - v.getHoraIngreso();
+     private static int calcularGanancias(Vehiculo v) {
+        LocalDateTime now = LocalDateTime.now();
+        int horaActual = now.getHour();
+        int minutosActuales = now.getMinute();
+        int tiempoEnParqueadero = horaActual - v.getHoraIngreso();
+        if (minutosActuales > 0) {
+            tiempoEnParqueadero++; 
+        }
 
-    //tarifa por hora
-    int tarifaPorHora = 10000;
+        int tarifaPorHora = 10000;
+        int ganancias = tiempoEnParqueadero * tarifaPorHora;
 
-    // Calcular las ganancias para el vehículo
-    int ganancias = tiempoEnParqueadero * tarifaPorHora;
-
-    return ganancias;
-}
+        return ganancias;
+    }
     
   private static String obtenerReporteGanancias(ArrayList<Vehiculo> vehiculos) {
     int totalGanancias = 0;
